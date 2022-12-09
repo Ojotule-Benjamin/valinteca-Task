@@ -2,7 +2,6 @@ import React from "react";
 import Welcome from "./pages/Welcome";
 import SignUp from "./pages/SignUp";
 import Succeed from "./pages/Succeed";
-// import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([

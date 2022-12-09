@@ -8,8 +8,6 @@ import {
   PasswordIconSvg,
   DividerIconSvg,
 } from "../assets/icons/icons";
-// import { EmailIconSvg } from "../assets/icons/icons";
-// import { passwordIconSvg } from "../assets/icons/icons";
 
 const SignUp = () => {
   return (
