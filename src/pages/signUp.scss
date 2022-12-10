@@ -80,7 +80,7 @@
         align-items: flex-start;
         //justify-content: space-between;
         //background-color: red;
-        padding: 30px 10px;
+        //padding: 30px 10px;
       }
 
       h1 {
@@ -122,6 +122,7 @@
           line-height: 160%;
           color: #1f1249;
           text-align: start;
+          margin-bottom: 20px;
         }
       }
 
@@ -137,7 +138,7 @@
         @include md {
           width: 100%;
           height: "auto";
-          gap: 3px;
+          gap: 20px;
           display: flex;
           align-items: flex-start;
           justify-content: center;

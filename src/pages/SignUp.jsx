@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import signUpImg from "../assets/img/signUpImg.png";
 import { Link } from "react-router-dom";
 import "./signUp.scss";
@@ -8,50 +8,26 @@ import {
   PasswordIconSvg,
   DividerIconSvg,
 } from "../assets/icons/icons";
+import { useForm } from "react-hook-form";
 
 const SignUp = () => {
-  const initialValues = {
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    message: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+  });
+
+  const onSubmit = (data) => console.log(data);
+
+  const showError = () => {
+    console.log(errors);
   };
 
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-    console.log(formValues);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setFormErrors(validate(formValues));
-    setIsSubmit(true);
-  };
-
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit)
-      console.log(formValues);
-  }, [formErrors, formValues, isSubmit]);
-
-  const validate = (values) => {
-    const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const letterNumber = /^[0-9a-zA-Z]+$/;
-    if (!values.username) {
-      errors.username = "Username is required";
-    } else if (!values.email) {
-      errors.email = "Email is required";
-    } else if (!values.password) {
-      errors.password = "Password is required";
-    } else if (!values.password) return errors;
-  };
+  //watch password
+  const password = watch("password");
 
   return (
     <div className="signUpContainer">
@@ -64,62 +40,104 @@ const SignUp = () => {
           <h1>Create Account</h1>
           <p>Go ahead and sign up, let everyone know how awesome you are!</p>
 
-          <form className="formStyles" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputSyle">
               <UserIconSvg />
               <DividerIconSvg />
               <input
                 type="text"
-                name="username"
-                value={formValues.username}
                 placeholder="Username"
-                onChange={handleChange}
+                {...register("username", {
+                  required: "Username is required",
+                  minLength: {
+                    value: 5,
+                    message: "Username cannot be less than 5 characters",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Username cannot exceed 15 characters",
+                  },
+                  pattern: {
+                    value: /^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$/i,
+                    message: "Username should include character and letter",
+                  },
+                })}
               />
             </div>
-            <p className="error">testing</p>
+            {errors.username && (
+              <span className="error">{errors.username?.message}</span>
+            )}
 
             <div className="inputSyle">
               <EmailIconSvg />
               <DividerIconSvg />
               <input
                 type="email"
-                name="email"
-                value={formValues.email}
                 placeholder="Email"
-                onChange={handleChange}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
               />
             </div>
-            <p className="error">testing</p>
+            {errors.email && (
+              <span className="error">{errors.email?.message}</span>
+            )}
 
             <div className="inputSyle">
               <PasswordIconSvg />
               <DividerIconSvg />
               <input
                 type="password"
-                name="password"
-                value={formValues.password}
                 placeholder="Password"
-                onChange={handleChange}
+                {...register("password", {
+                  required: "Password is required",
+
+                  pattern: {
+                    value:
+                      /^(?=.*[0-9])(?=.*[!@#$%^&*.,])[a-zA-Z0-9!@#$%^&*.,]{6,16}$/,
+                    message:
+                      "Password Must Contain Atleast 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",
+                  },
+                })}
               />
             </div>
-            <p className="error">testing</p>
+            {errors.password && (
+              <span className="error">{errors.password?.message}</span>
+            )}
 
             <div className="inputSyle">
               <PasswordIconSvg />
               <DividerIconSvg />
               <input
                 type="password"
-                name="confirmpassword"
-                value={formValues.password}
                 placeholder="Confirm password"
-                onChange={handleChange}
+                {...register("confirm_password", {
+                  required: "Confirm password",
+                  validate: (value) =>
+                    value === password || "The pass do not match",
+                  checkUrl: async () => await fetch(),
+                })}
               />
             </div>
-            <p className="error">testing</p>
+            {errors.confirm_password && (
+              <span className="error">{errors.confirm_password?.message}</span>
+            )}
+
+            {/* <button onClick={showError} to="/successful">
+              Create Account
+            </button> */}
+
+            <Link to="/successful" className="linkStyles">
+              <button onClick={showError} to="/successful">
+                Create Account
+              </button>
+            </Link>
+            {/* <button type="submit">Create Account</button> */}
           </form>
-          <Link to="/successful" className="linkStyles">
-            <button>Create Account</button>
-          </Link>
         </div>
       </div>
     </div>
