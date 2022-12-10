@@ -1,6 +1,6 @@
 import React from "react";
 import signUpImg from "../assets/img/signUpImg.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./signUp.scss";
 import {
   UserIconSvg,
@@ -9,8 +9,11 @@ import {
   DividerIconSvg,
 } from "../assets/icons/icons";
 import { useForm } from "react-hook-form";
+import { SettingsApplications } from "@mui/icons-material";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,7 +23,20 @@ const SignUp = () => {
     mode: "all",
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    fetch("https://goldblv.com/api/hiring/tasks/register", {
+      method: "POST",
+      headers: { "Content-Type": SettingsApplications.json },
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        localStorage.setItem("email", data.email);
+        navigate("/successful");
+      })
+      .catch((err) => {
+        console.log("error");
+      });
+  };
 
   const showError = () => {
     console.log(errors);
@@ -115,27 +131,27 @@ const SignUp = () => {
               <input
                 type="password"
                 placeholder="Confirm password"
-                {...register("confirm_password", {
-                  required: "Confirm password",
+                {...register("password_confirmation", {
+                  required: "Confirm Passsword",
                   validate: (value) =>
                     value === password || "The pass do not match",
                   checkUrl: async () => await fetch(),
                 })}
               />
             </div>
-            {errors.confirm_password && (
-              <span className="error">{errors.confirm_password?.message}</span>
+            {errors.password_confirmation && (
+              <span className="error">
+                {errors.password_confirmation?.message}
+              </span>
             )}
 
-            {/* <button onClick={showError} to="/successful">
-              Create Account
-            </button> */}
+            <button onClick={showError}>Create Account</button>
 
-            <Link to="/successful" className="linkStyles">
+            {/* <Link to="/successful" className="linkStyles">
               <button onClick={showError} to="/successful">
                 Create Account
               </button>
-            </Link>
+            </Link> */}
             {/* <button type="submit">Create Account</button> */}
           </form>
         </div>

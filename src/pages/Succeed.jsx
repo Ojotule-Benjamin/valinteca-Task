@@ -12,7 +12,7 @@ const Succeed = () => {
 
         <div className="right">
           <h1>Successfully logged in</h1>
-          <p>User@gmail.com</p>
+          <p>{localStorage.getItem("email")}</p>
         </div>
       </div>
     </div>
