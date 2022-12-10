@@ -9,7 +9,6 @@ import {
   DividerIconSvg,
 } from "../assets/icons/icons";
 import { useForm } from "react-hook-form";
-import { SettingsApplications } from "@mui/icons-material";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -26,7 +25,9 @@ const SignUp = () => {
   const onSubmit = (data) => {
     fetch("https://goldblv.com/api/hiring/tasks/register", {
       method: "POST",
-      headers: { "Content-Type": SettingsApplications.json },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     })
       .then(() => {
