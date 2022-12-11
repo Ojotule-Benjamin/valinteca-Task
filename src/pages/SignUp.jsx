@@ -23,7 +23,7 @@ const SignUp = () => {
   });
 
   const onSubmit = (data) => {
-    const endpoint = "https://goldblv.com/api/hiring/tasks/registe";
+    const endpoint = "https://goldblv.com/api/hiring/tasks/register";
 
     fetch(endpoint, {
       method: "POST",
