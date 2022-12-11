@@ -23,23 +23,24 @@ const SignUp = () => {
   });
 
   const onSubmit = (data) => {
-    fetch("https://goldblv.com/api/hiring/tasks/register", {
+    const endpoint = "https://goldblv.com/api/hiring/tasks/registe";
+
+    fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-      .then(() => {
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
         localStorage.setItem("email", data.email);
         navigate("/successful");
       })
-      .catch((err) => {
-        if (!data.ok) {
-          console.log("error");
-          setMessage(true);
-          throw Error(data.status);
-        }
+      .catch((error) => {
+        console.error("Error:", error);
+        setMessage(true);
       });
   };
 
@@ -152,7 +153,9 @@ const SignUp = () => {
 
             <button onClick={showError()}>Create Account</button>
             {message && (
-              <span>Thanks, There is an error, check back later</span>
+              <span className="error">
+                Thanks, There is an error, check back later
+              </span>
             )}
           </form>
         </div>
