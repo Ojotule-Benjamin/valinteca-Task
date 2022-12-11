@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import signUpImg from "../assets/img/signUpImg.png";
 import { useNavigate } from "react-router-dom";
 import "./signUp.scss";
@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 
 const SignUp = () => {
   const navigate = useNavigate();
-
+  const [message, setMessage] = useState(false);
   const {
     register,
     handleSubmit,
@@ -35,7 +35,11 @@ const SignUp = () => {
         navigate("/successful");
       })
       .catch((err) => {
-        console.log("error");
+        if (!data.ok) {
+          console.log("error");
+          setMessage(true);
+          throw Error(data.status);
+        }
       });
   };
 
@@ -146,14 +150,10 @@ const SignUp = () => {
               </span>
             )}
 
-            <button onClick={showError}>Create Account</button>
-
-            {/* <Link to="/successful" className="linkStyles">
-              <button onClick={showError} to="/successful">
-                Create Account
-              </button>
-            </Link> */}
-            {/* <button type="submit">Create Account</button> */}
+            <button onClick={showError()}>Create Account</button>
+            {message && (
+              <span>Thanks, There is an error, check back later</span>
+            )}
           </form>
         </div>
       </div>
