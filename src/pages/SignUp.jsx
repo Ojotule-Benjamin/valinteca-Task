@@ -79,8 +79,8 @@ const SignUp = () => {
                     message: "Username cannot exceed 15 characters",
                   },
                   pattern: {
-                    value: /^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$/i,
-                    message: "Username should include character and letter",
+                    value: /^[a-zA-Z][a-zA-Z0-9]*[a-zA-Z]$/i,
+                    message: "Username must start & end with a character",
                   },
                 })}
               />
